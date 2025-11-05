@@ -1,2 +1,2 @@
 export * from "./Device";
-export { connectAllDisplays as connectAllDevices, getAllDevices } from "./get";
+export { connectAllDisplays, getAllDevices } from "./get";
