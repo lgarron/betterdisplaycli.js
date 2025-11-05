@@ -1,0 +1,15 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: brew install betterdisplay
+      - run: open -a /Applications/BetterDisplay.app
+      - run: make lint
+      - run: make test
