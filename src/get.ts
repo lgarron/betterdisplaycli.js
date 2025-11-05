@@ -36,7 +36,7 @@ export async function getAllDevices(options?: {
     });
 }
 
-export async function connectAllDevices(): Promise<void> {
+export async function connectAllDisplays(): Promise<void> {
   await new PrintableShellCommand("betterdisplaycli", [
     ["perform", "--connectAllDisplays"],
   ])
