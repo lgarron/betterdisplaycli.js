@@ -28,4 +28,4 @@ publish:
 	npm publish
 
 .PHONY: prepublishOnly
-prepublishOnly: lint
+prepublishOnly: lint test clean
