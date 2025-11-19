@@ -1,4 +1,3 @@
-import type { styleText } from "node:util";
 import { PrintableShellCommand } from "printable-shell-command";
 import {
   type Device,
@@ -17,7 +16,7 @@ export async function getAllDevices(options?: {
   const jsonStream = await new PrintableShellCommand("betterdisplaycli", [
     ["get", "--identifiers"],
   ])
-    .print({ styleTextFormat: "auto", argumentLineWrapping: "inline" })
+    .print({ argumentLineWrapping: "inline" })
     .stdout()
     .text();
   const deviceInfos: DeviceInfo[] = JSON.parse(`[${jsonStream}]`);
@@ -35,7 +34,7 @@ export async function connectAllDisplays(): Promise<void> {
   await new PrintableShellCommand("betterdisplaycli", [
     ["perform", "--connectAllDisplays"],
   ])
-    .print({ styleTextFormat, argumentLineWrapping: "inline" })
+    .print({ argumentLineWrapping: "inline" })
     .spawnTransparently().success;
 }
 
