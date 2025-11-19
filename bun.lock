@@ -4,7 +4,7 @@
   "workspaces": {
     "": {
       "dependencies": {
-        "printable-shell-command": "^2.3.2",
+        "printable-shell-command": "^2.6.2",
       },
       "devDependencies": {
         "@biomejs/biome": "^2.3.4",
@@ -99,7 +99,7 @@
 
     "path-class": ["path-class@0.6.1", "", { "dependencies": { "@types/node": "^24.7.1", "xdg-basedir": "^5.1.0" } }, "sha512-38ZYmRh38kFSKivJCHk9S4ZHOK4Wf6ocxHfYBdDmVN7GWVOXrYsxwMBQpjhGyPNBdiPo4W3X91x2TzGmxHBlUg=="],
 
-    "printable-shell-command": ["printable-shell-command@2.3.2", "", { "dependencies": { "path-class": ">=0.6.1", "type-fest": ">=5.1.0" }, "optionalDependencies": { "@types/bun": "^1.2.20", "@types/node": "^24.2.0" } }, "sha512-ugY8+l1C1qWuo5OIcm841JT0LIqDIVYDQwymf9zecx+ukp1KCh0UUXL7HMnBEl+Ej7jI7qQXHJ0TwzQeSDR7Dw=="],
+    "printable-shell-command": ["printable-shell-command@2.6.2", "", { "dependencies": { "path-class": ">=0.6.1", "type-fest": ">=5.1.0" }, "optionalDependencies": { "@types/bun": "^1.2.20", "@types/node": "^24.2.0" } }, "sha512-fgO2pTQ3F2bzAQJoKt06hE0wtBareRFlzvWnHaGBhmDaoLQTmajZO+OMITnzfg9b3DYklOduyXDT5ckDmKRiMA=="],
 
     "tagged-tag": ["tagged-tag@1.0.0", "", {}, "sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng=="],
 
