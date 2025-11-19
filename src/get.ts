@@ -8,11 +8,6 @@ import {
   type VirtualScreen,
 } from "./Device";
 
-const styleTextFormat: Parameters<typeof styleText>[0] = [
-  "bold",
-  "gray",
-] as const;
-
 export async function getAllDevices(options?: {
   ignoreDisplayGroups: true;
 }): Promise<(Display | VirtualScreen)[]>;
@@ -22,7 +17,7 @@ export async function getAllDevices(options?: {
   const jsonStream = await new PrintableShellCommand("betterdisplaycli", [
     ["get", "--identifiers"],
   ])
-    .print({ styleTextFormat })
+    .print({ styleTextFormat: "auto", argumentLineWrapping: "inline" })
     .stdout()
     .text();
   const deviceInfos: DeviceInfo[] = JSON.parse(`[${jsonStream}]`);
@@ -40,6 +35,8 @@ export async function connectAllDisplays(): Promise<void> {
   await new PrintableShellCommand("betterdisplaycli", [
     ["perform", "--connectAllDisplays"],
   ])
-    .print({ styleTextFormat })
+    .print({ styleTextFormat, argumentLineWrapping: "inline" })
     .spawnTransparently().success;
 }
+
+await getAllDevices();
