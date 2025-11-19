@@ -37,5 +37,3 @@ export async function connectAllDisplays(): Promise<void> {
     .print({ argumentLineWrapping: "inline" })
     .spawnTransparently().success;
 }
-
-await getAllDevices();
