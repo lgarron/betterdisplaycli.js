@@ -2,6 +2,8 @@ import { expect, spyOn, test } from "bun:test";
 import { stderr } from "node:process";
 import { getAllDevices } from "./get";
 
+stderr.isTTY = true;
+
 const stderrMock = spyOn(stderr, "write");
 
 test("getAllDevices", async () => {
