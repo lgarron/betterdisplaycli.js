@@ -50,7 +50,7 @@ export async function getAllDevices(
     });
 }
 
-export async function connectAllDisplays(options: QuietOption): Promise<void> {
+export async function connectAllDisplays(options?: QuietOption): Promise<void> {
   await print(
     new PrintableShellCommand("betterdisplaycli", [
       ["perform", "--connectAllDisplays"],
