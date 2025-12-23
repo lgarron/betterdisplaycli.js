@@ -1,6 +1,6 @@
 {
   "name": "betterdisplaycli",
-  "version": "0.1.11",
+  "version": "0.1.12-dev",
   "description": "TypeScript bindings for `betterdisplaycli`.",
   "author": "Lucas Garron <code@garron.net>",
   "license": "MIT",
