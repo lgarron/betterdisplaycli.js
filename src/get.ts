@@ -7,11 +7,11 @@ import {
   type VirtualScreen,
 } from "./Device";
 
-interface QuietOption {
+export interface QuietOption {
   quiet?: boolean;
 }
 
-function print(
+export function print(
   command: PrintableShellCommand,
   printOptions?: Parameters<PrintableShellCommand["print"]>[0],
   quietOptions?: QuietOption,

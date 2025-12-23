@@ -1,3 +1,6 @@
+import { PrintableShellCommand } from "printable-shell-command";
+import { print, type QuietOption } from "./get";
+
 export type NumberString = string;
 
 export interface DeviceInfoCommon {
@@ -35,13 +38,75 @@ export class Device {
   constructor(public readonly info: DeviceInfoCommon) {}
 }
 
-export class Display extends Device {
+class SingleDisplay extends Device {
+  constructor(public override readonly info: DeviceInfoCommon) {
+    super(info);
+  }
+  boolean = {
+    get: async (
+      settingName: "connected" | "hiDPI",
+      options: QuietOption,
+    ): Promise<boolean> => {
+      switch (
+        (
+          await print(
+            new PrintableShellCommand("betterdisplaycli", [
+              "get",
+              `--name=${this.info.name}`,
+              `--${settingName}`,
+            ]),
+            { argumentLineWrapping: "inline" },
+            options,
+          ).text()
+        ).trim()
+      ) {
+        case "on": {
+          return true;
+        }
+        case "off": {
+          return true;
+        }
+        default:
+          throw new Error("Invalid value") as never;
+      }
+    },
+
+    set: async (
+      setting: "connected" | "hiDPI",
+      on: boolean,
+      options: QuietOption,
+    ): Promise<void> => {
+      await print(
+        new PrintableShellCommand("betterdisplaycli", [
+          "set",
+          `--name=${this.info.name}`,
+          `--${setting}=${on ? "on" : "off"}`,
+        ]),
+        { argumentLineWrapping: "inline" },
+        options,
+      ).shellOut();
+    },
+
+    toggle: async (
+      settingName: "connected" | "hiDPI",
+      options: QuietOption,
+    ): Promise<void> => {
+      await this.boolean.set(
+        settingName,
+        await this.boolean.get(settingName, options),
+        options,
+      );
+    },
+  };
+}
+
+export class Display extends SingleDisplay {
   constructor(public override readonly info: DisplayInfo) {
     super(info);
   }
 }
 
-export class VirtualScreen extends Device {
+export class VirtualScreen extends SingleDisplay {
   constructor(public override readonly info: VirtualScreenInfo) {
     super(info);
   }
