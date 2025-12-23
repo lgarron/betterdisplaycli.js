@@ -1,21 +1,32 @@
 {
-	"name": "betterdisplaycli",
-	"version": "0.1.10-dev",
-	"description": "TypeScript bindings for `betterdisplaycli`.",
-	"author": "Lucas Garron <code@garron.net>",
-	"exports": {
-		".": {
-			"default": "./src/index.ts"
-		}
-	},
-	"dependencies": {
-		"printable-shell-command": "^2.6.3"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^2.3.4",
-		"@cubing/dev-config": ">=0.8.3"
-	},
-	"scripts": {
-		"prepublishOnly": "make prepublishOnly"
-	}
+  "name": "betterdisplaycli",
+  "version": "0.1.10-dev",
+  "description": "TypeScript bindings for `betterdisplaycli`.",
+  "author": "Lucas Garron <code@garron.net>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lgarron/betterdisplaycli.js.git"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "printable-shell-command": "^2.6.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.4",
+    "@cubing/dev-config": ">=0.8.3",
+    "bun-dx": "^0.1.4",
+    "typescript": "^5.9.3"
+  },
+  "files": [
+    "./src/"
+  ],
+  "scripts": {
+    "prepublishOnly": "make prepublishOnly"
+  }
 }

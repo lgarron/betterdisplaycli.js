@@ -1,11 +1,24 @@
+.PHONY: check
+check: lint test check-package.json
+
 .PHONY: lint
-lint: setup
-	bun x @biomejs/biome check
-	bun x tsc --noEmit --project .
+lint: lint-biome lint-tsc
+
+.PHONY: lint-biome
+lint-biome: setup
+	bun x -- bun-dx --package @biomejs/biome biome -- check
+
+.PHONY: lint-tsc
+lint-tsc: setup
+	bun x -- bun-dx --package typescript tsc -- --project .
 
 .PHONY: format
 format: setup
-	bun x @biomejs/biome check --write
+	bun x -- bun-dx --package @biomejs/biome biome -- check --write
+
+.PHONY: check-package.json
+check-package.json: setup
+	bun x -- bun-dx --package @cubing/dev-config package.json -- check
 
 .PHONY: test
 test: setup
@@ -28,4 +41,4 @@ publish:
 	npm publish
 
 .PHONY: prepublishOnly
-prepublishOnly: lint test clean
+prepublishOnly: lint clean check
