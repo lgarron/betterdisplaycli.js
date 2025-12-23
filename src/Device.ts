@@ -72,7 +72,7 @@ class SingleDisplay extends Device {
     },
 
     set: async (
-      setting: "connected" | "hiDPI",
+      settingName: "connected" | "hiDPI",
       on: boolean,
       options?: QuietOption,
     ): Promise<void> => {
@@ -80,7 +80,7 @@ class SingleDisplay extends Device {
         new PrintableShellCommand("betterdisplaycli", [
           "set",
           `--name=${this.info.name}`,
-          `--${setting}=${on ? "on" : "off"}`,
+          `--${settingName}=${on ? "on" : "off"}`,
         ]),
         { argumentLineWrapping: "inline" },
         options,
@@ -91,11 +91,15 @@ class SingleDisplay extends Device {
       settingName: "connected" | "hiDPI",
       options?: QuietOption,
     ): Promise<void> => {
-      await this.boolean.set(
-        settingName,
-        await this.boolean.get(settingName, options),
+      await print(
+        new PrintableShellCommand("betterdisplaycli", [
+          "toggle",
+          `--name=${this.info.name}`,
+          `--${settingName}`,
+        ]),
+        { argumentLineWrapping: "inline" },
         options,
-      );
+      ).spawn().success;
     },
   };
 }
