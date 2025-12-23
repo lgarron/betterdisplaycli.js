@@ -84,7 +84,7 @@ class SingleDisplay extends Device {
         ]),
         { argumentLineWrapping: "inline" },
         options,
-      ).shellOut();
+      ).spawn().success;
     },
 
     toggle: async (
