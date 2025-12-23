@@ -45,7 +45,7 @@ class SingleDisplay extends Device {
   boolean = {
     get: async (
       settingName: "connected" | "hiDPI",
-      options: QuietOption,
+      options?: QuietOption,
     ): Promise<boolean> => {
       switch (
         (
@@ -74,7 +74,7 @@ class SingleDisplay extends Device {
     set: async (
       setting: "connected" | "hiDPI",
       on: boolean,
-      options: QuietOption,
+      options?: QuietOption,
     ): Promise<void> => {
       await print(
         new PrintableShellCommand("betterdisplaycli", [
@@ -89,7 +89,7 @@ class SingleDisplay extends Device {
 
     toggle: async (
       settingName: "connected" | "hiDPI",
-      options: QuietOption,
+      options?: QuietOption,
     ): Promise<void> => {
       await this.boolean.set(
         settingName,
