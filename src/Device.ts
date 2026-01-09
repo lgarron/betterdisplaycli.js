@@ -84,7 +84,7 @@ class SingleDisplay extends Device {
         ]),
         { argumentLineWrapping: "inline" },
         options,
-      ).spawn().success;
+      ).shellOut({ print: false });
     },
 
     toggle: async (
@@ -99,7 +99,39 @@ class SingleDisplay extends Device {
         ]),
         { argumentLineWrapping: "inline" },
         options,
-      ).spawn().success;
+      ).shellOut({ print: false });
+    },
+  };
+  string = {
+    get: async (
+      settingName: "resolution",
+      options?: QuietOption,
+    ): Promise<string> => {
+      return print(
+        new PrintableShellCommand("betterdisplaycli", [
+          "get",
+          `--name=${this.info.name}`,
+          `--${settingName}`,
+        ]),
+        { argumentLineWrapping: "inline" },
+        options,
+      ).text();
+    },
+
+    set: async (
+      settingName: "resolution",
+      value: string,
+      options?: QuietOption,
+    ): Promise<void> => {
+      await print(
+        new PrintableShellCommand("betterdisplaycli", [
+          "set",
+          `--name=${this.info.name}`,
+          `--${settingName}=${value}`,
+        ]),
+        { argumentLineWrapping: "inline" },
+        options,
+      ).shellOut({ print: false });
     },
   };
 }
