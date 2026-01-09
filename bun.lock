@@ -5,7 +5,7 @@
     "": {
       "name": "betterdisplaycli",
       "dependencies": {
-        "printable-shell-command": "^5.0.6",
+        "printable-shell-command": "^5.0.7",
       },
       "devDependencies": {
         "@biomejs/biome": "2.3.9",
@@ -101,7 +101,7 @@
 
     "path-class": ["path-class@0.11.0", "", { "dependencies": { "@types/node": ">=24.7.1", "xdg-basedir": "^5.1.0" } }, "sha512-1LASpKHpcrxPBhzdnvvyNeL/MJsTuRyodTlY4dEXrn0XIrh/KhM0CtZgxSzXtDNaQnl4F2Uynr06VXy7VzB10A=="],
 
-    "printable-shell-command": ["printable-shell-command@5.0.6", "", { "dependencies": { "@types/node": ">=25.0.3", "path-class": ">=0.12.1" } }, "sha512-fozgfa/Nir8IrK1M9XOGRMPiQPxfYs1DQ2fTBkPPW0fPpgC9a4xDGeNHWbu/rHwLqyzkL+7Ys29/JA+1ZfKcnA=="],
+    "printable-shell-command": ["printable-shell-command@5.0.7", "", { "dependencies": { "@types/node": ">=25.0.3", "path-class": ">=0.12.1" } }, "sha512-mpHAcZaNlOuzSzy8BljCRuX+tJCkPBAQfzczBT6oh9k8J/EzV65kw5ZIz81/kHCsNQqXL5CLDgxzlFU0hDc+LQ=="],
 
     "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 

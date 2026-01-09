@@ -15,7 +15,7 @@
     }
   },
   "dependencies": {
-    "printable-shell-command": "^5.0.6"
+    "printable-shell-command": "^5.0.7"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.9",
