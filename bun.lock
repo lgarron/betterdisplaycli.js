@@ -5,7 +5,7 @@
     "": {
       "name": "betterdisplaycli",
       "dependencies": {
-        "printable-shell-command": ">=4.0.4",
+        "printable-shell-command": "^5.0.6",
       },
       "devDependencies": {
         "@biomejs/biome": "2.3.9",
@@ -101,12 +101,16 @@
 
     "path-class": ["path-class@0.11.0", "", { "dependencies": { "@types/node": ">=24.7.1", "xdg-basedir": "^5.1.0" } }, "sha512-1LASpKHpcrxPBhzdnvvyNeL/MJsTuRyodTlY4dEXrn0XIrh/KhM0CtZgxSzXtDNaQnl4F2Uynr06VXy7VzB10A=="],
 
-    "printable-shell-command": ["printable-shell-command@4.0.4", "", { "dependencies": { "@types/node": ">=25.0.3", "path-class": ">=0.10.3" } }, "sha512-0wUqzs668cD5Y6/SzwDyuWToh4cFe2zIN3ijCFLvecLONiP7OQMX1Vzb0Sbsczwiz/ZdDFTze+kFxsgWSL3I+Q=="],
+    "printable-shell-command": ["printable-shell-command@5.0.6", "", { "dependencies": { "@types/node": ">=25.0.3", "path-class": ">=0.12.1" } }, "sha512-fozgfa/Nir8IrK1M9XOGRMPiQPxfYs1DQ2fTBkPPW0fPpgC9a4xDGeNHWbu/rHwLqyzkL+7Ys29/JA+1ZfKcnA=="],
 
     "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "undici-types": ["undici-types@7.16.0", "", {}, "sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw=="],
 
     "xdg-basedir": ["xdg-basedir@5.1.0", "", {}, "sha512-GCPAHLvrIH13+c0SuacwvRYj2SxJXQ4kaVTT5xgL3kPrz56XxkF21IGhjSE1+W0aw7gpBWRGXLCPnPby6lSpmQ=="],
+
+    "@cubing/dev-config/printable-shell-command": ["printable-shell-command@4.0.4", "", { "dependencies": { "@types/node": ">=25.0.3", "path-class": ">=0.10.3" } }, "sha512-0wUqzs668cD5Y6/SzwDyuWToh4cFe2zIN3ijCFLvecLONiP7OQMX1Vzb0Sbsczwiz/ZdDFTze+kFxsgWSL3I+Q=="],
+
+    "printable-shell-command/path-class": ["path-class@0.13.1", "", { "dependencies": { "@types/node": ">=24.7.1", "xdg-basedir": "^5.1.0" } }, "sha512-K+IB9UYIBM8f8I9ZSO7TnGZepFO+Moz3A7bLGtPDYOJtTNSZHQEijQWepvpMaY/aclzUK/8qSIo5g9h0xMQOuQ=="],
   }
 }
