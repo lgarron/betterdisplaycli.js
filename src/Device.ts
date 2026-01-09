@@ -48,17 +48,15 @@ class SingleDisplay extends Device {
       options?: QuietOption,
     ): Promise<boolean> => {
       switch (
-        (
-          await print(
-            new PrintableShellCommand("betterdisplaycli", [
-              "get",
-              `--name=${this.info.name}`,
-              `--${settingName}`,
-            ]),
-            { argumentLineWrapping: "inline" },
-            options,
-          ).text()
-        ).trim()
+        await print(
+          new PrintableShellCommand("betterdisplaycli", [
+            "get",
+            `--name=${this.info.name}`,
+            `--${settingName}`,
+          ]),
+          { argumentLineWrapping: "inline" },
+          options,
+        ).text({ trimTrailingNewlines: "single-required" })
       ) {
         case "on": {
           return true;
@@ -115,7 +113,7 @@ class SingleDisplay extends Device {
         ]),
         { argumentLineWrapping: "inline" },
         options,
-      ).text();
+      ).text({ trimTrailingNewlines: "single-required" });
     },
 
     set: async (
