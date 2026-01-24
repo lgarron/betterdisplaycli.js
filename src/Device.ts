@@ -1,6 +1,9 @@
 import { PrintableShellCommand } from "printable-shell-command";
 import { print, type QuietOption } from "./get";
 
+type BOOLEAN_SETTING = "connected" | "hiDPI" | "notch";
+type STRING_SETTING = "resolution";
+
 export type NumberString = string;
 
 export interface DeviceInfoCommon {
@@ -44,7 +47,7 @@ class SingleDisplay extends Device {
   }
   boolean = {
     get: async (
-      settingName: "connected" | "hiDPI",
+      settingName: BOOLEAN_SETTING,
       options?: QuietOption,
     ): Promise<boolean> => {
       switch (
@@ -70,7 +73,7 @@ class SingleDisplay extends Device {
     },
 
     set: async (
-      settingName: "connected" | "hiDPI",
+      settingName: BOOLEAN_SETTING,
       on: boolean,
       options?: QuietOption,
     ): Promise<void> => {
@@ -86,7 +89,7 @@ class SingleDisplay extends Device {
     },
 
     toggle: async (
-      settingName: "connected" | "hiDPI",
+      settingName: BOOLEAN_SETTING,
       options?: QuietOption,
     ): Promise<void> => {
       await print(
@@ -102,7 +105,7 @@ class SingleDisplay extends Device {
   };
   string = {
     get: async (
-      settingName: "resolution",
+      settingName: STRING_SETTING,
       options?: QuietOption,
     ): Promise<string> => {
       return print(
@@ -117,7 +120,7 @@ class SingleDisplay extends Device {
     },
 
     set: async (
-      settingName: "resolution",
+      settingName: STRING_SETTING,
       value: string,
       options?: QuietOption,
     ): Promise<void> => {
