@@ -3,6 +3,7 @@ import {
   type Device,
   type DeviceInfo,
   type Display,
+  type DisplayGroup,
   deviceFromInfo,
   type VirtualScreen,
 } from "./Device";
@@ -24,11 +25,13 @@ export function print(
   return command;
 }
 
+type GetDeviceOptions = {
+  ignoreDisplayGroups?: true;
+} & QuietOption;
+
 async function getDeviceInfos<T>(
   printable_shell_command: PrintableShellCommand,
-  options?: {
-    ignoreDisplayGroups?: true;
-  } & QuietOption,
+  options?: GetDeviceOptions,
 ): Promise<T[]> {
   const jsonStream = await print(
     printable_shell_command,
@@ -49,14 +52,10 @@ async function getDeviceInfos<T>(
 }
 
 export async function getAllDevices(
-  options?: {
-    ignoreDisplayGroups?: true;
-  } & QuietOption,
+  options?: GetDeviceOptions,
 ): Promise<(Display | VirtualScreen)[]>;
 export async function getAllDevices(
-  options?: {
-    ignoreDisplayGroups?: boolean;
-  } & QuietOption,
+  options?: GetDeviceOptions,
 ): Promise<Device[]> {
   const jsonStream = await print(
     new PrintableShellCommand(BINARY_NAME, [["get", "--identifiers"]]),
@@ -76,16 +75,47 @@ export async function getAllDevices(
     });
 }
 
+export function getMain(
+  options?: QuietOption,
+): Promise<Display | VirtualScreen> {
+  return getDisplayWithSelectorArg("--displayWithMainStatus", {
+    ...options,
+    ignoreDisplayGroups: true,
+  });
+}
+
+export async function getByName(
+  name: string,
+  options?: GetDeviceOptions,
+): Promise<Display | VirtualScreen>;
+export function getByName(
+  name: string,
+  options?: GetDeviceOptions,
+): Promise<Display | VirtualScreen | DisplayGroup> {
+  return getDisplayWithSelectorArg(`--name=${name}`, options);
+}
+
+export async function tryGetByName(
+  name: string,
+  options?: GetDeviceOptions,
+): Promise<Display | VirtualScreen | undefined>;
+export async function tryGetByName(
+  name: string,
+  options?: GetDeviceOptions,
+): Promise<Display | VirtualScreen | DisplayGroup | undefined> {
+  const devices = await getAllDevices(options);
+  return devices.filter((device) => device.info.name === name)[0];
+}
+
 export async function getDisplayWithSelectorArg(
   arg: "--displayWithMainStatus" | `--name=${string}`,
-  options?: QuietOption,
+  options?: GetDeviceOptions,
 ): Promise<Display> {
   return (
     await getDeviceInfos<Display>(
       new PrintableShellCommand("betterdisplaycli", [
         "get",
         arg,
-        "--type=Display",
         "--identifiers",
       ]),
       options,

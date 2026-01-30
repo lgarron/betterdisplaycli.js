@@ -1,5 +1,5 @@
 import { PrintableShellCommand } from "printable-shell-command";
-import { getDisplayWithSelectorArg, print, type QuietOption } from "./get";
+import { print, type QuietOption } from "./get";
 import { isNotUndefined, ResolutionInfo } from "./ResolutionInfo";
 
 type BOOLEAN_SETTING = "connected" | "hiDPI" | "notch";
@@ -198,26 +198,6 @@ class SingleDisplay extends Device {
 export class Display extends SingleDisplay {
   constructor(public override readonly info: DisplayInfo) {
     super(info);
-  }
-
-  static main(options?: QuietOption): Promise<Display> {
-    return getDisplayWithSelectorArg("--displayWithMainStatus", options);
-  }
-
-  static fromName(name: string, options?: QuietOption): Promise<Display> {
-    return getDisplayWithSelectorArg(`--name=${name}`, options);
-  }
-
-  static async tryFromName(
-    name: string,
-    options?: QuietOption,
-  ): Promise<Display | null> {
-    try {
-      return await getDisplayWithSelectorArg(`--name=${name}`, options);
-    } catch {
-      // TODO: what is the simplest way to verify this was because there was no such display (as opposed to a general invocation error)?
-      return null;
-    }
   }
 }
 
