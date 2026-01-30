@@ -149,11 +149,11 @@ class SingleDisplay extends Device {
       const currentResolution = await this.resolution.get();
 
       const args: string[] = [];
-      if (resolutionInfo.width !== currentResolution.width) {
-        args.push(`--width=${resolutionInfo.width}`);
-      }
-      if (resolutionInfo.width !== currentResolution.height) {
-        args.push(`--height=${resolutionInfo.height}`);
+      if (
+        resolutionInfo.width !== currentResolution.width ||
+        resolutionInfo.width !== currentResolution.height
+      ) {
+        args.push(`--resolution=${resolutionInfo.logicalResolutionString()}`);
       }
       if (
         isNotUndefined(resolutionInfo.hiDPI) &&
