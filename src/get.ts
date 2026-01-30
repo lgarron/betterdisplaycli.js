@@ -7,6 +7,8 @@ import {
   type VirtualScreen,
 } from "./Device";
 
+const BINARY_NAME = "betterdisplaycli";
+
 export interface QuietOption {
   quiet?: boolean;
 }
@@ -22,6 +24,30 @@ export function print(
   return command;
 }
 
+async function getDeviceInfos<T>(
+  printable_shell_command: PrintableShellCommand,
+  options?: {
+    ignoreDisplayGroups?: true;
+  } & QuietOption,
+): Promise<T[]> {
+  const jsonStream = await print(
+    printable_shell_command,
+    { argumentLineWrapping: "inline" },
+    options,
+  )
+    .stdout()
+    .text();
+  const deviceInfos: DeviceInfo[] = JSON.parse(`[${jsonStream}]`);
+  return deviceInfos
+    .map((info) => deviceFromInfo(info))
+    .filter((device: Device) => {
+      return (
+        !options?.ignoreDisplayGroups ||
+        device.info.deviceType !== "DisplayGroup"
+      );
+    }) as T[];
+}
+
 export async function getAllDevices(
   options?: {
     ignoreDisplayGroups?: true;
@@ -33,7 +59,7 @@ export async function getAllDevices(
   } & QuietOption,
 ): Promise<Device[]> {
   const jsonStream = await print(
-    new PrintableShellCommand("betterdisplaycli", [["get", "--identifiers"]]),
+    new PrintableShellCommand(BINARY_NAME, [["get", "--identifiers"]]),
     { argumentLineWrapping: "inline" },
     options,
   )
@@ -50,9 +76,24 @@ export async function getAllDevices(
     });
 }
 
+export async function getDisplayWithSelectorArg(
+  arg: "--displayWithMainStatus" | `--name=${string}`,
+): Promise<Display> {
+  return (
+    await getDeviceInfos<Display>(
+      new PrintableShellCommand("betterdisplaycli", [
+        "get",
+        arg,
+        "--type=Display",
+        "--identifiers",
+      ]),
+    )
+  )[0];
+}
+
 export async function connectAllDisplays(options?: QuietOption): Promise<void> {
   await print(
-    new PrintableShellCommand("betterdisplaycli", [
+    new PrintableShellCommand(BINARY_NAME, [
       ["perform", "--connectAllDisplays"],
     ]),
     { argumentLineWrapping: "inline" },

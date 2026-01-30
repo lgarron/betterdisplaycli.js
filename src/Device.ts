@@ -1,5 +1,6 @@
 import { PrintableShellCommand } from "printable-shell-command";
-import { print, type QuietOption } from "./get";
+import { getDisplayWithSelectorArg, print, type QuietOption } from "./get";
+import { isNotUndefined, ResolutionInfo } from "./ResolutionInfo";
 
 type BOOLEAN_SETTING = "connected" | "hiDPI" | "notch";
 type STRING_SETTING = "resolution";
@@ -135,11 +136,85 @@ class SingleDisplay extends Device {
       ).shellOut({ print: false });
     },
   };
+
+  resolution = {
+    get: async (): Promise<ResolutionInfo> => {
+      return ResolutionInfo.fromString(await this.string.get("resolution"));
+    },
+    // The return value indicates if any changes were needed (and performed)
+    set: async (
+      resolutionInfo: ResolutionInfo,
+      options?: QuietOption,
+    ): Promise<boolean> => {
+      const currentResolution = await this.resolution.get();
+
+      const args: string[] = [];
+      if (resolutionInfo.width !== currentResolution.width) {
+        args.push(`--width=${resolutionInfo.width}`);
+      }
+      if (resolutionInfo.width !== currentResolution.height) {
+        args.push(`--height=${resolutionInfo.height}`);
+      }
+      if (
+        isNotUndefined(resolutionInfo.hiDPI) &&
+        resolutionInfo.hiDPI !== currentResolution.hiDPI
+      ) {
+        args.push(`--hiDPI=${resolutionInfo.hiDPI}`);
+      }
+      if (
+        isNotUndefined(resolutionInfo.notch) &&
+        resolutionInfo.notch !== currentResolution.notch
+      ) {
+        args.push(`--notch=${resolutionInfo.notch ? "on" : "off"}`);
+      }
+
+      if (args.length === 0) {
+        // No changes to perform.
+        return false;
+      }
+
+      await print(
+        new PrintableShellCommand("betterdisplaycli", [
+          "set",
+          `--name=${this.info.name}`,
+          ...args,
+        ]),
+        { argumentLineWrapping: "inline" },
+        options,
+      ).shellOut({ print: false });
+      return true;
+    },
+  };
+
+  async connect(): Promise<void> {
+    await this.boolean.set("connected", true);
+  }
+
+  async disconnect(): Promise<void> {
+    await this.boolean.set("connected", false);
+  }
 }
 
 export class Display extends SingleDisplay {
   constructor(public override readonly info: DisplayInfo) {
     super(info);
+  }
+
+  static main(): Promise<Display> {
+    return getDisplayWithSelectorArg("--displayWithMainStatus");
+  }
+
+  static fromName(name: string): Promise<Display> {
+    return getDisplayWithSelectorArg(`--name=${name}`);
+  }
+
+  static async tryFromName(name: string): Promise<Display | null> {
+    try {
+      return await getDisplayWithSelectorArg(`--name=${name}`);
+    } catch {
+      // TODO: what is the simplest way to verify this was because there was no such display (as opposed to a general invocation error)?
+      return null;
+    }
   }
 }
 
