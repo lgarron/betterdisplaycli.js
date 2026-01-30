@@ -78,6 +78,7 @@ export async function getAllDevices(
 
 export async function getDisplayWithSelectorArg(
   arg: "--displayWithMainStatus" | `--name=${string}`,
+  options?: QuietOption,
 ): Promise<Display> {
   return (
     await getDeviceInfos<Display>(
@@ -87,6 +88,7 @@ export async function getDisplayWithSelectorArg(
         "--type=Display",
         "--identifiers",
       ]),
+      options,
     )
   )[0];
 }

@@ -200,17 +200,20 @@ export class Display extends SingleDisplay {
     super(info);
   }
 
-  static main(): Promise<Display> {
-    return getDisplayWithSelectorArg("--displayWithMainStatus");
+  static main(options?: QuietOption): Promise<Display> {
+    return getDisplayWithSelectorArg("--displayWithMainStatus", options);
   }
 
-  static fromName(name: string): Promise<Display> {
-    return getDisplayWithSelectorArg(`--name=${name}`);
+  static fromName(name: string, options?: QuietOption): Promise<Display> {
+    return getDisplayWithSelectorArg(`--name=${name}`, options);
   }
 
-  static async tryFromName(name: string): Promise<Display | null> {
+  static async tryFromName(
+    name: string,
+    options?: QuietOption,
+  ): Promise<Display | null> {
     try {
-      return await getDisplayWithSelectorArg(`--name=${name}`);
+      return await getDisplayWithSelectorArg(`--name=${name}`, options);
     } catch {
       // TODO: what is the simplest way to verify this was because there was no such display (as opposed to a general invocation error)?
       return null;
