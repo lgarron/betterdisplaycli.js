@@ -65,7 +65,6 @@ export class ResolutionInfo {
     const match = s.match(
       /^([1-9][0-9]*)[x×]([1-9][0-9]*)+(@([1-9][0-9]*)x)?([+-]notch)?$/,
     );
-    console.log({ s, match });
     if (!match) {
       throw new Error("Invalid resolution info.");
     }
