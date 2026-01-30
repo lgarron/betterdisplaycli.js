@@ -4,6 +4,8 @@ import { isNotUndefined, ResolutionInfo } from "./ResolutionInfo";
 
 type BOOLEAN_SETTING = "connected" | "hiDPI" | "notch";
 type STRING_SETTING = "resolution";
+type FLOAT_SETTING = "brightness";
+type INTEGER_SETTING = "bit-depth" | "rotation";
 
 export type NumberString = string;
 
@@ -124,6 +126,74 @@ class SingleDisplay extends Device {
     set: async (
       settingName: STRING_SETTING,
       value: string,
+      options?: QuietOption,
+    ): Promise<void> => {
+      await print(
+        new PrintableShellCommand("betterdisplaycli", [
+          "set",
+          `--name=${this.info.name}`,
+          `--${settingName}=${value}`,
+        ]),
+        { argumentLineWrapping: "inline" },
+        options,
+      ).shellOut({ print: false });
+    },
+  };
+
+  float = {
+    get: async (
+      settingName: FLOAT_SETTING,
+      options?: QuietOption,
+    ): Promise<number> => {
+      const value = await print(
+        new PrintableShellCommand("betterdisplaycli", [
+          "get",
+          `--name=${this.info.name}`,
+          `--${settingName}`,
+        ]),
+        { argumentLineWrapping: "inline" },
+        options,
+      ).text({ trimTrailingNewlines: "single-required" });
+      return parseFloat(value);
+    },
+
+    set: async (
+      settingName: FLOAT_SETTING,
+      value: number,
+      options?: QuietOption,
+    ): Promise<void> => {
+      await print(
+        new PrintableShellCommand("betterdisplaycli", [
+          "set",
+          `--name=${this.info.name}`,
+          `--${settingName}=${value}`,
+        ]),
+        { argumentLineWrapping: "inline" },
+        options,
+      ).shellOut({ print: false });
+    },
+  };
+
+  int = {
+    get: async (
+      settingName: INTEGER_SETTING,
+      options?: QuietOption,
+    ): Promise<number> => {
+      const value = await print(
+        new PrintableShellCommand("betterdisplaycli", [
+          "get",
+          `--name=${this.info.name}`,
+          `--${settingName}`,
+        ]),
+        { argumentLineWrapping: "inline" },
+        options,
+      ).text({ trimTrailingNewlines: "single-required" });
+      return parseInt(value, 10);
+    },
+
+    set: async (
+      settingName: INTEGER_SETTING,
+      value: number,
       options?: QuietOption,
     ): Promise<void> => {
       await print(
