@@ -104,6 +104,7 @@ class SingleDisplay extends Device {
       ).shellOut({ print: false });
     },
   };
+
   string = {
     get: async (
       settingName: STRING_SETTING,
@@ -149,9 +150,10 @@ class SingleDisplay extends Device {
       const currentResolution = await this.resolution.get();
 
       const args: string[] = [];
+      // TODO: implement batch changes.
       if (
         resolutionInfo.width !== currentResolution.width ||
-        resolutionInfo.width !== currentResolution.height
+        resolutionInfo.height !== currentResolution.height
       ) {
         args.push(`--resolution=${resolutionInfo.logicalResolutionString()}`);
       }
@@ -159,7 +161,7 @@ class SingleDisplay extends Device {
         isNotUndefined(resolutionInfo.hiDPI) &&
         resolutionInfo.hiDPI !== currentResolution.hiDPI
       ) {
-        args.push(`--hiDPI=${resolutionInfo.hiDPI}`);
+        args.push(`--hiDPI=${resolutionInfo.hiDPI ? "on" : "off"}`);
       }
       if (
         isNotUndefined(resolutionInfo.notch) &&
