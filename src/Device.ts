@@ -1,5 +1,10 @@
 import { PrintableShellCommand } from "printable-shell-command";
-import { print, type QuietOption } from "./get";
+import {
+  type DetachOption,
+  print,
+  type QuietOption,
+  shellOutSilentOrDetach,
+} from "./get";
 import { isNotUndefined, ResolutionInfo } from "./ResolutionInfo";
 
 type BOOLEAN_SETTING = "connected" | "hiDPI" | "notch";
@@ -78,32 +83,37 @@ class SingleDisplay extends Device {
     set: async (
       settingName: BOOLEAN_SETTING,
       on: boolean,
-      options?: QuietOption,
+      options?: QuietOption & DetachOption,
     ): Promise<void> => {
-      await print(
-        new PrintableShellCommand("betterdisplaycli", [
-          "set",
-          `--name=${this.info.name}`,
-          `--${settingName}=${on ? "on" : "off"}`,
-        ]),
-        { argumentLineWrapping: "inline" },
-        options,
-      ).shellOut({ print: false });
+      await shellOutSilentOrDetach(
+        print(
+          new PrintableShellCommand("betterdisplaycli", [
+            "set",
+            `--name=${this.info.name}`,
+            `--${settingName}=${on ? "on" : "off"}`,
+          ]),
+          { argumentLineWrapping: "inline" },
+          options,
+        ),
+      );
     },
 
     toggle: async (
       settingName: BOOLEAN_SETTING,
-      options?: QuietOption,
+      options?: QuietOption & DetachOption,
     ): Promise<void> => {
-      await print(
-        new PrintableShellCommand("betterdisplaycli", [
-          "toggle",
-          `--name=${this.info.name}`,
-          `--${settingName}`,
-        ]),
-        { argumentLineWrapping: "inline" },
+      await shellOutSilentOrDetach(
+        print(
+          new PrintableShellCommand("betterdisplaycli", [
+            "toggle",
+            `--name=${this.info.name}`,
+            `--${settingName}`,
+          ]),
+          { argumentLineWrapping: "inline" },
+          options,
+        ),
         options,
-      ).shellOut({ print: false });
+      );
     },
   };
 
@@ -126,17 +136,19 @@ class SingleDisplay extends Device {
     set: async (
       settingName: STRING_SETTING,
       value: string,
-      options?: QuietOption,
+      options?: QuietOption & DetachOption,
     ): Promise<void> => {
-      await print(
-        new PrintableShellCommand("betterdisplaycli", [
-          "set",
-          `--name=${this.info.name}`,
-          `--${settingName}=${value}`,
-        ]),
-        { argumentLineWrapping: "inline" },
-        options,
-      ).shellOut({ print: false });
+      await shellOutSilentOrDetach(
+        print(
+          new PrintableShellCommand("betterdisplaycli", [
+            "set",
+            `--name=${this.info.name}`,
+            `--${settingName}=${value}`,
+          ]),
+          { argumentLineWrapping: "inline" },
+          options,
+        ),
+      );
     },
   };
 
@@ -160,17 +172,19 @@ class SingleDisplay extends Device {
     set: async (
       settingName: FLOAT_SETTING,
       value: number,
-      options?: QuietOption,
+      options?: QuietOption & DetachOption,
     ): Promise<void> => {
-      await print(
-        new PrintableShellCommand("betterdisplaycli", [
-          "set",
-          `--name=${this.info.name}`,
-          `--${settingName}=${value}`,
-        ]),
-        { argumentLineWrapping: "inline" },
-        options,
-      ).shellOut({ print: false });
+      await shellOutSilentOrDetach(
+        print(
+          new PrintableShellCommand("betterdisplaycli", [
+            "set",
+            `--name=${this.info.name}`,
+            `--${settingName}=${value}`,
+          ]),
+          { argumentLineWrapping: "inline" },
+          options,
+        ),
+      );
     },
   };
 
@@ -194,17 +208,19 @@ class SingleDisplay extends Device {
     set: async (
       settingName: INTEGER_SETTING,
       value: number,
-      options?: QuietOption,
+      options?: QuietOption & DetachOption,
     ): Promise<void> => {
-      await print(
-        new PrintableShellCommand("betterdisplaycli", [
-          "set",
-          `--name=${this.info.name}`,
-          `--${settingName}=${value}`,
-        ]),
-        { argumentLineWrapping: "inline" },
-        options,
-      ).shellOut({ print: false });
+      await shellOutSilentOrDetach(
+        print(
+          new PrintableShellCommand("betterdisplaycli", [
+            "set",
+            `--name=${this.info.name}`,
+            `--${settingName}=${value}`,
+          ]),
+          { argumentLineWrapping: "inline" },
+          options,
+        ),
+      );
     },
   };
 
@@ -212,10 +228,15 @@ class SingleDisplay extends Device {
     get: async (): Promise<ResolutionInfo> => {
       return ResolutionInfo.fromString(await this.string.get("resolution"));
     },
-    // The return value indicates if any changes were needed (and performed)
+    /**
+     * The return value indicates if any changes were
+     *
+     * - needed and
+     * - performed successfully (non-detached) or initiated successfully (detached).
+     */
     set: async (
       resolutionInfo: ResolutionInfo,
-      options?: QuietOption,
+      options?: QuietOption & DetachOption,
     ): Promise<boolean> => {
       const currentResolution = await this.resolution.get();
 
@@ -245,15 +266,17 @@ class SingleDisplay extends Device {
         return false;
       }
 
-      await print(
-        new PrintableShellCommand("betterdisplaycli", [
-          "set",
-          `--name=${this.info.name}`,
-          ...args,
-        ]),
-        { argumentLineWrapping: "inline" },
-        options,
-      ).shellOut({ print: false });
+      await shellOutSilentOrDetach(
+        print(
+          new PrintableShellCommand("betterdisplaycli", [
+            "set",
+            `--name=${this.info.name}`,
+            ...args,
+          ]),
+          { argumentLineWrapping: "inline" },
+          options,
+        ),
+      );
       return true;
     },
   };

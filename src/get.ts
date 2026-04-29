@@ -14,6 +14,10 @@ export interface QuietOption {
   quiet?: boolean;
 }
 
+export interface DetachOption {
+  detach?: boolean;
+}
+
 export function print(
   command: PrintableShellCommand,
   printOptions?: Parameters<PrintableShellCommand["print"]>[0],
@@ -23,6 +27,17 @@ export function print(
     command.print(printOptions);
   }
   return command;
+}
+
+export async function shellOutSilentOrDetach(
+  command: PrintableShellCommand,
+  options?: DetachOption,
+): Promise<void> {
+  if (options?.detach) {
+    command.spawnDetached();
+  } else {
+    await command.shellOut({ print: false });
+  }
 }
 
 type GetDeviceOptions = {
